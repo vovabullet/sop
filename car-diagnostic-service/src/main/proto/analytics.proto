@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "edu.rutmiit.course.cardiagnostic.grpc";
+
+service DiagnosticService {
+  rpc CalculateCarCondition (CarConditionRequest) returns (CarConditionResponse) {}
+}
+
+message CarConditionRequest {
+  int64 car_id = 1;
+  string category = 2;
+}
+
+message CarConditionResponse {
+  int64 car_id = 1;
+  int32 condition_score = 2;
+  string verdict = 3;
+}
