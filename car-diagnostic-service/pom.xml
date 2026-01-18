@@ -14,8 +14,8 @@
     <name>car-diagnostic-service</name>
     <description>car-diagnostic-service</description>
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <protobuf.version>3.25.3</protobuf.version>
         <protobuf-plugin.version>0.6.1</protobuf-plugin.version>
