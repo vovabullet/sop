@@ -34,8 +34,8 @@ services:
       - microservices-net
 
   # Микросервисы
-  analytics-service:
-    build: ./analytics-service
+  diagnostic-service:
+    build: ./diagnostic-service
     ports:
       - "9091:9090" # gRPC порт
     environment:
@@ -70,18 +70,18 @@ services:
     networks:
       - microservices-net
 
-  demo-rest:
-    build: ./demo-rest
+  car-diagnostic-service:
+    build: ./car-diagnostic-service
     ports:
       - "8080:8080"
     environment:
       - SPRING_RABBITMQ_HOST=rabbitmq
       # Указываем адрес gRPC сервиса внутри сети Docker
-      - GRPC_CLIENT_ANALYTICS_SERVICE_ADDRESS=static://analytics-service:9090
+      - GRPC_CLIENT_DIAGNOSTIC_SERVICE_ADDRESS=static://diagnostic-service:9090
     depends_on:
       rabbitmq:
         condition: service_healthy
-      analytics-service:
+      diagnostic-service:
         condition: service_started
     networks:
       - microservices-net
