@@ -1,15 +1,21 @@
 # Этап сборки (чтобы не требовать установленного Java/Maven на хосте)
 FROM maven:3.9-eclipse-temurin-17 AS build
-WORKDIR /app
-# Копируем локальные библиотеки (контракты), если они есть
-COPY lib /app/lib
-# Копируем описание проекта
-COPY pom.xml .
-COPY src ./src
+WORKDIR /build
 
+# Copy ws pom.xml and download dependencies
+COPY ws/pom.xml ws/pom.xml
+WORKDIR /build/ws
+RUN mvn dependency:go-offline -B || true
+
+# Copy ws source and build
+COPY ws/src ./src
+RUN mvn clean package -DskipTests -B
+
+# Runtime stage
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
-# ARG позволяет передать имя файла при сборке
-ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} app.jar
+
+# Copy JAR from build stage
+COPY --from=build /build/ws/target/*.jar app.jar
+
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]

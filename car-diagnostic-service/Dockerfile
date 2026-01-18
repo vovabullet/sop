@@ -1,3 +1,26 @@
+# Build stage
+FROM maven:3.9-eclipse-temurin-17 AS build
+WORKDIR /build
+
+# First, build and install contract dependencies
+COPY events-contract/pom.xml events-contract/pom.xml
+COPY events-contract/src events-contract/src
+RUN cd events-contract && mvn clean install -DskipTests -B
+
+COPY car-api-contract/pom.xml car-api-contract/pom.xml
+COPY car-api-contract/src car-api-contract/src
+RUN cd car-api-contract && mvn clean install -DskipTests -B
+
+# Copy car-diagnostic-service pom.xml and download dependencies
+COPY car-diagnostic-service/pom.xml car-diagnostic-service/pom.xml
+WORKDIR /build/car-diagnostic-service
+RUN mvn dependency:go-offline -B || true
+
+# Copy car-diagnostic-service source and build
+COPY car-diagnostic-service/src ./src
+RUN mvn clean package -DskipTests -B
+
+# Runtime stage
 # Используем легковесный образ JRE 17 на базе Alpine Linux
 FROM eclipse-temurin:17-jre-alpine
 
@@ -7,13 +30,8 @@ WORKDIR /app
 # Создаем пользователя 'javauser', чтобы не запускать приложение от root (Security Best Practice)
 RUN addgroup -S javauser && adduser -S javauser -G javauser
 
-# Аргумент для поиска JAR файла.
-# Мы ищем любой JAR, но исключаем *-sources.jar или *-javadoc.jar если они есть.
-# Так как мы сделали mvn clean, в папке target будет лежать нужный нам fat-jar.
-ARG JAR_FILE=target/*.jar
-
-# Копируем JAR внутрь образа под именем app.jar
-COPY ${JAR_FILE} app.jar
+# Copy JAR from build stage
+COPY --from=build /build/car-diagnostic-service/target/*.jar app.jar
 
 # Меняем владельца файла
 RUN chown javauser:javauser /app/app.jar

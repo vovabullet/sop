@@ -35,7 +35,9 @@ services:
 
   # Микросервисы
   diagnostic-service:
-    build: ./diagnostic-service
+    build:
+      context: .
+      dockerfile: ./diagnostic-service/Dockerfile
     ports:
       - "9091:9090" # gRPC порт
     environment:
@@ -47,7 +49,9 @@ services:
       - microservices-net
 
   notification-service:
-    build: ./ws
+    build:
+      context: .
+      dockerfile: ./ws/Dockerfile
     ports:
       - "8083:8083"
     environment:
@@ -60,7 +64,9 @@ services:
       - microservices-net
 
   audit-service:
-    build: ./audit-service
+    build:
+      context: .
+      dockerfile: ./audit-service/Dockerfile
     environment:
       - SPRING_RABBITMQ_HOST=rabbitmq
       - SERVER_PORT=8082
@@ -71,7 +77,9 @@ services:
       - microservices-net
 
   car-diagnostic-service:
-    build: ./car-diagnostic-service
+    build:
+      context: .
+      dockerfile: ./car-diagnostic-service/Dockerfile
     ports:
       - "8080:8080"
     environment:
