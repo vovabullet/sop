@@ -1,1 +1,45 @@
-POST http://localhost:8080/api/users/999/rate
+### Получение всех автомобилей
+GET http://localhost:8080/api/cars
+Accept: application/json
+
+### Получение автомобиля по ID
+GET http://localhost:8080/api/cars/1
+Accept: application/json
+
+### Получение всех механиков
+GET http://localhost:8080/api/mechanics
+Accept: application/json
+
+### Создание нового механика
+POST http://localhost:8080/api/mechanics
+Content-Type: application/json
+
+{
+  "firstName": "Сергей",
+  "lastName": "Сидоров"
+}
+
+### Создание нового автомобиля
+POST http://localhost:8080/api/cars
+Content-Type: application/json
+
+{
+  "brand": "Mercedes",
+  "model": "S-Class",
+  "year": 2023,
+  "vin": "W1234567890123456",
+  "licensePlate": "С777СС77",
+  "mechanicId": 1
+}
+
+### Диагностика автомобиля (вызов gRPC + RabbitMQ)
+POST http://localhost:8080/api/cars/1/diagnose
+Accept: application/json
+
+### GraphQL: Получение списка автомобилей
+POST http://localhost:8080/graphql
+Content-Type: application/json
+
+{
+  "query": "query { cars(page: 0, size: 10) { content { brand model vin licensePlate mechanic { firstName lastName } } totalElements } }"
+}
