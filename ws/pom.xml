@@ -5,15 +5,14 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.6</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<version>3.3.3</version>
+		<relativePath/>
 	</parent>
 	<groupId>edu.rutmiit.course.cardiagnostic</groupId>
 	<artifactId>ws-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>ws-service</name>
 	<description>WebSocket service for Car Diagnostic</description>
-	<url/>
 	<properties>
 		<java.version>21</java.version>
 	</properties>
@@ -26,7 +25,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -54,7 +52,6 @@
             <version>7.4</version>
         </dependency>
 	</dependencies>
-
 	<build>
 		<plugins>
 			<plugin>
@@ -63,5 +60,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
