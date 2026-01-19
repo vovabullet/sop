@@ -40,6 +40,7 @@ services:
       - "9091:9090" # gRPC порт
     environment:
       - SPRING_RABBITMQ_HOST=rabbitmq
+      - MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://zipkin:9411/api/v2/spans
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -53,6 +54,7 @@ services:
     environment:
       - SPRING_RABBITMQ_HOST=rabbitmq
       - SERVER_PORT=8083
+      - MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://zipkin:9411/api/v2/spans
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -64,6 +66,7 @@ services:
     environment:
       - SPRING_RABBITMQ_HOST=rabbitmq
       - SERVER_PORT=8082
+      - MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://zipkin:9411/api/v2/spans
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -78,6 +81,7 @@ services:
       - SPRING_RABBITMQ_HOST=rabbitmq
       # Указываем адрес gRPC сервиса внутри сети Docker
       - GRPC_CLIENT_DIAGNOSTIC_SERVICE_ADDRESS=static://diagnostic-service:9090
+      - MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://zipkin:9411/api/v2/spans
     depends_on:
       rabbitmq:
         condition: service_healthy
